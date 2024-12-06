@@ -7,5 +7,9 @@ namespace DotNetFlix.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
+
+        private readonly 
+
+
     }
 }
