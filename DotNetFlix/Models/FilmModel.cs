@@ -9,5 +9,8 @@
         public string Synopsis { get; set; }
         public string Director { get; set; }
 
+        public List<RentalModel> Rental { get; set; }
+
+
     }
 }
