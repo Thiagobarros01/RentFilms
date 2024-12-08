@@ -1,4 +1,6 @@
-﻿namespace DotNetFlix.Models
+﻿using System.Text.Json.Serialization;
+
+namespace DotNetFlix.Models
 {
     public class UserModel
     {

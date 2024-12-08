@@ -24,7 +24,19 @@ namespace DotNetFlix.Controllers
             return Ok(filmes);
         }
 
+        [HttpGet("ListarFilmesPorGenero{gender}")]
+        public async Task<ActionResult<ResponseModel<List<FilmModel>>>> ListarFilmesPorGenero(string gender)
+        {
+            var filmes = await _filmInterface.ListarFilmesPorGenero(gender);
+            return Ok(filmes);
+        }
 
+        [HttpGet("ListarInfoFilme{id}")]
+        public async Task<ActionResult<ResponseModel<FilmModel>>> ListarInfoLivro(int id)
+        {
+            var filme = await _filmInterface.ListarInfoFilme(id);
+            return Ok(filme);
+        }
 
 
     }

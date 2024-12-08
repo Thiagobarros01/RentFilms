@@ -1,6 +1,7 @@
 ﻿using DotNetFlix.Data;
 using DotNetFlix.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace DotNetFlix.Services.Film
 {
@@ -12,10 +13,8 @@ namespace DotNetFlix.Services.Film
         {
             _context = context;
         }
-        public Task<ResponseModel<FilmModel>> AlugarFilme(int id)
-        {
-            throw new NotImplementedException();
-        }
+       
+       
 
         public async Task<ResponseModel<List<FilmModel>>> ListarFilmes()
         { 
@@ -45,14 +44,62 @@ namespace DotNetFlix.Services.Film
 
         }
 
-        public Task<ResponseModel<List<FilmModel>>> ListarFilmesPorGenero(string genero)
+        public async Task<ResponseModel<List<FilmModel>>> ListarFilmesPorGenero(string gender)
         {
-            throw new NotImplementedException();
+            ResponseModel<List<FilmModel>> resposta = new ResponseModel<List<FilmModel>>();
+            try
+            {
+                var filmes = await _context.Films.Where(f => f.Gender == gender.ToUpper()).ToListAsync();
+
+                Console.WriteLine(filmes);
+                if ( filmes.Count() == 0)
+                {
+                    resposta.Mensagem = "Não tem livros desse gênero";
+                    return resposta;
+                }
+
+                resposta.Dados = filmes;
+                resposta.Mensagem = "Filmes encontrados!";
+                resposta.Status= true;
+                return resposta;
+
+
+            }
+            catch (Exception e) {
+                resposta.Mensagem = e.Message;
+                resposta.Status = false;
+                return resposta;
+            }
         }
 
-        public Task<ResponseModel<FilmModel>> ListarInfoLivro(int id)
+        public async Task<ResponseModel<FilmModel>> ListarInfoFilme(int id)
         {
-            throw new NotImplementedException();
+            ResponseModel<FilmModel> resposta = new ResponseModel<FilmModel>();
+            try
+            {
+                var filme = await _context.Films.FirstOrDefaultAsync(f => f.Id == id);
+
+                
+                if (filme == null)
+                {
+                    resposta.Mensagem = "Nenhum filmes encontrado com este ID";
+                    return resposta;
+                }
+
+                resposta.Dados = filme;
+                resposta.Mensagem = "Filme encontrado!";
+                resposta.Status = true;
+                return resposta;
+
+
+            }
+            catch (Exception e)
+            {
+                resposta.Mensagem = e.Message;
+                resposta.Status = false;
+                return resposta;
+            }
+
         }
     }
 }

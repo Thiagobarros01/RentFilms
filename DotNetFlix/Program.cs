@@ -1,5 +1,6 @@
 using DotNetFlix.Data;
 using DotNetFlix.Services.Film;
+using DotNetFlix.Services.Rental;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,7 +14,7 @@ builder.Services.AddSwaggerGen();
 
 
 builder.Services.AddScoped<IFilmInterface, FilmService>();
-
+builder.Services.AddScoped<IRentalInterface, RentalService>();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
