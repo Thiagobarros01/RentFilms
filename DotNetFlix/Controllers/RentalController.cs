@@ -1,4 +1,5 @@
-﻿using DotNetFlix.Models;
+﻿using DotNetFlix.Dto.Rental;
+using DotNetFlix.Models;
 using DotNetFlix.Services.Rental;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -21,6 +22,13 @@ namespace DotNetFlix.Controllers
         public async Task<ActionResult<ResponseModel<RentalModel>>> AlugarFilme(int IdFilm,int IdUser)
         {
             var AlugarFilme = await _rentalInterface.AlugarFilme(IdFilm, IdUser);
+            return Ok(AlugarFilme);
+        }
+
+        [HttpPut("AssociarNota")]
+        public async Task<ActionResult<ResponseModel<RentalModel>>> AssociarNota(RentalAssociarNotaDto associarDto)
+        {
+            var AlugarFilme = await _rentalInterface.AssociarNota(associarDto);
             return Ok(AlugarFilme);
         }
     }

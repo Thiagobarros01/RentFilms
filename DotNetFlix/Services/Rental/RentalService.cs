@@ -2,6 +2,7 @@
 using DotNetFlix.Models;
 using Microsoft.EntityFrameworkCore;
 using DotNetFlix.Dto.Rental;
+
 namespace DotNetFlix.Services.Rental
 {
     public class RentalService : IRentalInterface
@@ -39,7 +40,7 @@ namespace DotNetFlix.Services.Rental
                     UserId = UserId,
                     FilmId = FilmId,
                     RentalDate = DateTime.Now,
-                    IsReturned = false
+                    
                 };
 
                 // Adicionando relacao Aluguel no banco
@@ -52,7 +53,7 @@ namespace DotNetFlix.Services.Rental
                     UserId = UserId,
                     FilmId = FilmId,
                     RentalDate = novoAluguel.RentalDate,
-                    IsReturned = novoAluguel.IsReturned
+                    
                 };
 
                 resposta.Status = true;
@@ -62,6 +63,54 @@ namespace DotNetFlix.Services.Rental
                 return resposta;
             }
             catch (Exception ex) 
+            {
+                resposta.Mensagem = ex.Message;
+                return resposta;
+            }
+        }
+
+        public async Task<ResponseModel<RentalModel>> AssociarNota(RentalAssociarNotaDto rentaldto)
+        {
+             ResponseModel<RentalModel> resposta = new ResponseModel<RentalModel>();
+            try
+            {
+                  var user = await _context.Users.FirstOrDefaultAsync(a=>a.Id == rentaldto.UserId);
+                    
+                  if (user == null)
+                {
+                    resposta.Mensagem = "usuario nao encontrado!";
+                    return resposta;
+                }
+
+                  var filme = await _context.Films.FirstOrDefaultAsync(f => f.Id == rentaldto.FilmId);
+
+                if (filme == null)
+                {
+                    resposta.Mensagem = "filme nao encontrado";
+                    return resposta;
+                }
+
+             
+                var rental = await _context.Rental.FirstOrDefaultAsync(r => r.FilmId == rentaldto.FilmId);
+
+                if (rental == null)
+                {
+                    resposta.Mensagem = "Este usuário não alugou este filme";
+                    return resposta;
+                }
+
+               
+                rental.note = rentaldto.note;
+
+                await _context.SaveChangesAsync();
+
+                resposta.Dados = rental;
+                resposta.Mensagem = "Nota atualizada com sucesso!";
+                return resposta;
+
+            }
+            
+            catch (Exception ex)
             {
                 resposta.Mensagem = ex.Message;
                 return resposta;

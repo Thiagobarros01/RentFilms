@@ -8,8 +8,8 @@ namespace DotNetFlix.Dto.Rental
         public int FilmId { get; set; }
         public DateTime RentalDate { get; set; }
         public DateTime? RentReturn { get; set; }
-        public bool IsReturned { get; set; } = false;
-
+        
+        public int? note { get; set; }  
 
     }
 }
