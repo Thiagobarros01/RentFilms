@@ -6,6 +6,8 @@ namespace DotNetFlix.Services.Rental
     {
         public Task<ResponseModel<RentalDemostrarDto>> AlugarFilme(int FilmId, int UserId);
         public Task<ResponseModel<RentalModel>> AssociarNota (RentalAssociarNotaDto rentalDto);
+        public Task<ResponseModel<List<RentalDemostrarDto>>> ListarFilmesAlugados(int id);
+
 
     }
 }

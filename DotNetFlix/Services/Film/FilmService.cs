@@ -1,4 +1,5 @@
 ﻿using DotNetFlix.Data;
+using DotNetFlix.Dto.Rental;
 using DotNetFlix.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
@@ -43,6 +44,8 @@ namespace DotNetFlix.Services.Film
                 }
 
         }
+
+    
 
         public async Task<ResponseModel<List<FilmModel>>> ListarFilmesPorGenero(string gender)
         {

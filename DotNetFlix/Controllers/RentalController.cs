@@ -31,5 +31,12 @@ namespace DotNetFlix.Controllers
             var AlugarFilme = await _rentalInterface.AssociarNota(associarDto);
             return Ok(AlugarFilme);
         }
+
+        [HttpGet("ListarFilmesAlugados")]
+        public async Task<ActionResult<ResponseModel<RentalModel>>> ListarFilmesAlugados(int id)
+        {
+            var aluguel = await _rentalInterface.ListarFilmesAlugados(id);
+            return Ok(aluguel);
+        }
     }
 }

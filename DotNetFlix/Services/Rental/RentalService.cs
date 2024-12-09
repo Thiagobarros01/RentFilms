@@ -116,5 +116,50 @@ namespace DotNetFlix.Services.Rental
                 return resposta;
             }
         }
+
+        public async Task<ResponseModel<List<RentalDemostrarDto>>> ListarFilmesAlugados(int id)
+        {
+            ResponseModel<List<RentalDemostrarDto>> resposta = new ResponseModel<List<RentalDemostrarDto>>();
+
+            try
+            {
+                var filmes = await _context.Rental.Where(f => f.UserId == id).Select(f => new RentalDemostrarDto
+
+                {
+
+                    FilmId = f.FilmId,
+                    UserId = f.UserId,
+                    note = f.note,
+                    RentalDate = f.RentalDate,
+                    RentReturn = f.RentReturn,
+
+
+
+                }).ToListAsync();
+
+                
+
+                if (filmes == null)
+                {
+                    resposta.Mensagem = "Não há filmes para mostrar!";
+                    resposta.Status = true;
+                    return resposta;
+                }
+
+
+
+                resposta.Mensagem = "Filmes encontrados!";
+                resposta.Status = true;
+                resposta.Dados = filmes;
+                return resposta;
+
+            }
+            catch (Exception e)
+            {
+                resposta.Mensagem = e.Message;
+                resposta.Status = false;
+                return resposta;
+            }
+        }
     }
 }

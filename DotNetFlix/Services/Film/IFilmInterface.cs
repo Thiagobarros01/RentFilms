@@ -1,4 +1,5 @@
-﻿using DotNetFlix.Models;
+﻿using DotNetFlix.Dto.Rental;
+using DotNetFlix.Models;
 
 namespace DotNetFlix.Services.Film
 {
@@ -9,7 +10,9 @@ namespace DotNetFlix.Services.Film
         Task<ResponseModel<List<FilmModel>>> ListarFilmesPorGenero(string gender);
         
 
-        
+
+
+
 
     }
 }
