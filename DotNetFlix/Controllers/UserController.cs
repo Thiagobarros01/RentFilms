@@ -22,6 +22,12 @@ namespace DotNetFlix.Controllers
             
             return Ok(users);
         }
+        [HttpGet("UserById")]
+        public async Task<IActionResult> GetUserById(int id) 
+        {
+            var user = await _userService.GetUserById(id);
+            return Ok(user);
+        }
 
     }
 }
