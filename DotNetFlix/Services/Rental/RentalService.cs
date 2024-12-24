@@ -139,7 +139,7 @@ namespace DotNetFlix.Services.Rental
 
                 
 
-                if (filmes == null)
+                if (filmes.Count() == 0)
                 {
                     resposta.Mensagem = "Não há filmes para mostrar!";
                     resposta.Status = true;
