@@ -1,4 +1,5 @@
-﻿using DotNetFlix.Services.User;
+﻿using DotNetFlix.Dto.User;
+using DotNetFlix.Services.User;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -29,5 +30,24 @@ namespace DotNetFlix.Controllers
             return Ok(user);
         }
 
+        [HttpPost("CreateUser")]
+        public async Task<IActionResult> CreateUser(CreateUserDto userDto)
+        {
+            var user = await _userService.CreateUser(userDto);
+            return Ok(user);
+        }
+
+        [HttpDelete("DeleteUser{id}")]
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+            var user = await _userService.DeleteUser(id);
+            return Ok(user);
+        }
+        [HttpPut("UpdateUser")]
+        public async Task<IActionResult> UpdateUser(ShowUserDto userdto)
+        {
+            var user =await  _userService.UpdateUser(userdto);
+            return Ok(user);
+        }
     }
 }

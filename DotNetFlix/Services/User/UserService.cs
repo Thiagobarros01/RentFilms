@@ -14,14 +14,74 @@ namespace DotNetFlix.Services.User
             _context = context;
         }
 
-        public Task<ResponseModel<List<ShowUserDto>>> CreateUser(ShowUserDto user)
+        public async Task<ResponseModel<List<ShowUserDto>>> CreateUser(CreateUserDto userDto)
         {
-            throw new NotImplementedException();
+            ResponseModel<List<ShowUserDto>> response = new ResponseModel<List<ShowUserDto>>();
+
+            try
+            {
+
+                var user = new UserModel
+                {
+                    Email = userDto.Email,
+                    Name = userDto.Name,
+                    Number = userDto.Number
+                };
+
+               
+                await _context.AddAsync(user);
+                _context.SaveChanges();
+
+                //Get all users
+                var users = await _context.Users.Select(u => new ShowUserDto { Email = u.Email, Number = u.Number, Name = u.Name, Id = u.Id }).ToListAsync();
+                response.Dados = users;
+                response.Mensagem = "Sucesso!";
+                response.Status = true;
+                return response;
+            }
+
+            catch (Exception ex) 
+            {
+                response.Mensagem = ex.Message;
+                response.Status = false;
+                return response;
+            }
         }
 
-        public Task<ResponseModel<List<ShowUserDto>>> DeleteUser(int UserId)
+        public async Task<ResponseModel<List<ShowUserDto>>> DeleteUser(int UserId)
         {
-            throw new NotImplementedException();
+            ResponseModel<List<ShowUserDto>> response = new ResponseModel<List<ShowUserDto>>();
+            try
+            {
+                var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == UserId);
+                if (user == null)
+                {
+                    response.Mensagem = "Não encontrado!";
+                    response.Status = true;
+                    return response;
+                }
+                _context.Users.Remove(user);
+               await  _context.SaveChangesAsync();
+
+
+                var users = await GetAllUsersAsDto();
+
+
+                response.Dados = users;
+                response.Mensagem = "Deletado com sucesso!";
+                response.Status = true;
+                return response;
+                
+
+
+
+            }
+            catch (Exception ex) 
+            {
+                response.Mensagem += ex.Message;
+                response.Status = false;
+                return response;
+            }
         }
 
         public async Task<ResponseModel<ShowUserDto>> GetUserById(int userId)
@@ -108,10 +168,54 @@ namespace DotNetFlix.Services.User
             }
         }
 
-        public Task<ResponseModel<List<ShowUserDto>>> UpdateUser(ShowUserDto userDto)
+        public async Task<ResponseModel<List<ShowUserDto>>> UpdateUser(ShowUserDto userDto)
         {
-            throw new NotImplementedException();
+            ResponseModel<List<ShowUserDto>> response = new ResponseModel<List<ShowUserDto>>();
+            try
+            {
+                var user = _context.Users.FirstOrDefault(u => u.Id == userDto.Id);
+              
+                if (user == null)
+                {
+                    response.Mensagem = "Usuário não encontrado!";
+                    response.Status = false;
+                    return response;
+                }
+               
+                user.Name = userDto.Name;
+                user.Email = userDto.Email;
+                user.Number = userDto.Number;
+
+                _context.Users.Update(user);
+                await _context.SaveChangesAsync();
+
+                response.Dados = await GetAllUsersAsDto();
+                response.Status = true;
+                return response;
+
+            }
+            catch (Exception e) 
+            {
+                response.Mensagem = e.Message;
+                response.Status = false;
+                return response;
+            }
 
         }
+        private  async Task<List<ShowUserDto>> GetAllUsersAsDto()
+        {
+
+            return await _context.Users
+                .Select(u => new ShowUserDto
+                {
+                    Email = u.Email,
+                    Name = u.Name,
+                    Number = u.Number,
+                    Id = u.Id
+                })
+                .ToListAsync();
+        }
     }
+ 
+
 }

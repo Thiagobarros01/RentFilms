@@ -9,7 +9,7 @@ namespace DotNetFlix.Services.User
         public Task<ResponseModel<ShowUserDto>> GetUserById(int UserId);
         public Task<ResponseModel<List<ShowUserDto>>> UpdateUser(ShowUserDto userDto);
         public Task<ResponseModel<List<ShowUserDto>>> DeleteUser(int UserId);
-        public Task<ResponseModel<List<ShowUserDto>>> CreateUser(ShowUserDto user);
+        public Task<ResponseModel<List<ShowUserDto>>> CreateUser(CreateUserDto user);
 
 
 
